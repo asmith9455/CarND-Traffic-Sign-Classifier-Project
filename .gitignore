@@ -8,3 +8,4 @@ models
 *.index
 *.data*
 *.png
+*.orig
