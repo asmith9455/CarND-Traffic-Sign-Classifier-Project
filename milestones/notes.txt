@@ -19,5 +19,9 @@ Q: how does the validation set accuracy improve even when the training data is p
 
 A1: One possibility is that the solution 'fits' better/becomes more smooth. This is likely based on the optimizer - I should read more about this 'AdamOptimizer'. 
 
+2018-08-11-21-40
+Analysis of specific images from the web indicates that when the probability of the top output class is very close to 1 (maybe greater than 0.95 or so) the classifications are very accurate, and the next possibilities also seem to make sense. Otherwise, the prediction is wrong. 
+
+Looking at the ones that were classified incorrectly and visualizing the corresponding feature layer conv1, it actually looks like a "3" 0 to the human eye, indicating a network architecture problem
 
 
