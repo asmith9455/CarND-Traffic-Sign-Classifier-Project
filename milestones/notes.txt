@@ -22,6 +22,6 @@ A1: One possibility is that the solution 'fits' better/becomes more smooth. This
 2018-08-11-21-40
 Analysis of specific images from the web indicates that when the probability of the top output class is very close to 1 (maybe greater than 0.95 or so) the classifications are very accurate, and the next possibilities also seem to make sense. Otherwise, the prediction is wrong. 
 
-Looking at the ones that were classified incorrectly and visualizing the corresponding feature layer conv1, it actually looks like a "3" 0 to the human eye, indicating a network architecture problem
+Looking at the ones that were classified incorrectly and visualizing the corresponding feature layer conv1, it actually looks like a "3" 0 to the human eye, indicating a network architecture problem. Also signs that have distinct shapes, such as 'priority road' or 'no entry' with large features are easily recognizable. It seems unlikely that this is a resolution problem because I can identify the signs - it is therefore an architecture problem, under the assumption that CNNs can identify features of arbitrary size and shape.
 
 
