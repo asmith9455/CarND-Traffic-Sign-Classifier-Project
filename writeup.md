@@ -53,16 +53,16 @@ This file.
 
 ### Dataset Exploration - Dataset Summary
 
-
+I created a basic summary of the dataset through 2
 
 
 
 ---
 ### Writeup / README
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
+#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+This file is the writeup. Here is a link to my [project code](https://github.com/asmith9455/CarND-Traffic-Sign-Classifier-Project/blob/547bece07c278e9e92db8d9bf1de8f133f32bff1/Traffic_Sign_Classifier.ipynb) 
 
 ### Data Set Summary & Exploration
 
