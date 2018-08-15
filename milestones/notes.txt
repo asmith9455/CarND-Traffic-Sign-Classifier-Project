@@ -6,7 +6,7 @@
 - even if I was to continue training until both randomly became high, this could simply mean that I have fit the network to both the training and validation data. Essentially by avoiding simply setting the number of epochs to 1000 or some huge number, I am using the 'Early Termination' principle. It seems that now something like dropout, L2 Regularization, or something similar is necessary to implement in order to create a network that generalizes.
 
 2018-07-28-00-35
-- I increased the depth of the network by using 3 hidden layers, and the training and validation accuracies increase much faster (requires fewer epochs) and approach 100% much closer (400 epochs reaches 3 9s, 341 epochs matches 400 epochs to 3 decimal places). The next step is to try dropout.
+- I increased the depth of the network by using 3 more hidden layers, and the training and validation accuracies increase much faster (requires fewer epochs) and approach 100% much closer (400 epochs reaches 3 9s, 341 epochs matches 400 epochs to 3 decimal places). The next step is to try dropout.
 
 2018-07-28-14-37
 - When dropout is used, the generality of the network seems much improved. Also, even when the training accuracy is 100%, the validation accuracy continues to improve. There are spikes every 50 or so epochs in which the training accuracy drops by less than 15%, then recovers almost immediately. 
@@ -14,10 +14,6 @@
 now I am going to try training for 1000 epochs, and see how good the network will become with different batch sizes, learning rates, and possibly different classifier sizes.
 
 perhaps the learning rate must be chosen based on the batch size?
-
-Q: how does the validation set accuracy improve even when the training data is perfectly fit?????
-
-A1: One possibility is that the solution 'fits' better/becomes more smooth. This is likely based on the optimizer - I should read more about this 'AdamOptimizer'. 
 
 2018-08-11-21-40
 Analysis of specific images from the web indicates that when the probability of the top output class is very close to 1 (maybe greater than 0.95 or so) the classifications are very accurate, and the next possibilities also seem to make sense. Otherwise, the prediction is wrong. 
