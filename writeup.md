@@ -14,7 +14,7 @@ The goals / steps of this project are the following:
 * (Complete) Design, train and test a model architecture
 * (Complete) Use the model to make predictions on new images
 * (Complete) Analyze the softmax probabilities of the new images
-* (TODO) Summarize the results with a written report
+* (Complete) Summarize the results with a written report
 
 ## Rubric Points
 
