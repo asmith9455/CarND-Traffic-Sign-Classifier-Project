@@ -47,41 +47,36 @@ The Jupyter notebook containing my code is Traffic_Sign_Classifier.ipynb.
 
 The HTML file containing the output of the Jupyter Notebook is milestones/2018-08-12-11-47_complete.html.
 
-### Files Submitted - A writeup report
-
-This file.
-
-### Dataset Exploration - Dataset Summary
-
-I created a basic summary of the dataset through 2
-
-
-
 ---
 ### Writeup / README
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.
 
-This file is the writeup. Here is a link to my [project code](https://github.com/asmith9455/CarND-Traffic-Sign-Classifier-Project/blob/547bece07c278e9e92db8d9bf1de8f133f32bff1/Traffic_Sign_Classifier.ipynb) 
+This file is the writeup. Here is a link to my [project code](https://github.com/asmith9455/CarND-Traffic-Sign-Classifier-Project/blob/547bece07c278e9e92db8d9bf1de8f133f32bff1/Traffic_Sign_Classifier.ipynb). The HTML output of the code is [here](https://github.com/asmith9455/CarND-Traffic-Sign-Classifier-Project/blob/547bece07c278e9e92db8d9bf1de8f133f32bff1/milestones/2018-08-12-11-47_complete.html).
 
 ### Data Set Summary & Exploration
 
 #### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+I used the numpy library to calculate summary statistics of the German traffic signs data set:
 
-* The size of training set is ?
-* The size of the validation set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is 34799
+* The size of the validation set is 4410
+* The size of test set is 12630
+* The shape of a traffic sign image is 32x32x3
+* The number of unique classes/labels in the data set is 43 (0 to 42)
 
 #### 2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Below are a few images that represent my exporatory visualization of the dataset. I started with the first 4 occurrences of each class in the training data set. This gave me a feel for what each sign generally looked like. I also created graphs that indicate the counts of images in the train, validation, and test sets. I generated graphs of both unnormalized (the plain counts) and normalized (the counts divided by the greatest count). On the normalized graph you can see that the proporitions of the different classes in the 3 sets are quite similar.
 
-![alt text][image1]
+![exploratory visualization](report_images/exploratory_visualization.png)
+![exploratory visualization 2](report_images/exploratory_visualization_2.png)
+![exploratory visualization 3](report_images/exploratory_visualization_3.png)
+![exploratory visualization 4](report_images/exploratory_visualization_4.png)
+![exploratory visualization 5](report_images/exploratory_visualization_5.png)
+
+![exploratory visualization 6](report_images/exploratory_visualization_6.png)
 
 ### Design and Test a Model Architecture
 
@@ -89,11 +84,13 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 As a first step, I decided to convert the images to grayscale because inspection of the various classes in the dataset indicated that the structure of the image should be sufficient to differentiate between classes. In addition, I assumed that using less data as input would result in faster training and inference times, since fewer parameters need to be adjusted by the optimizer. The time required to finalize the architecture and meet the requirements is inversely proportional to the training and inference times of the network assuming that the information lost did not significantly detract from network performance. 
 
+To convert the images to greyscale, I ended up using 29% of the red component, 58.7% of the green component, and 11.4% of the blue component. Initially I simply tried averaging all of them but got poor results - the images didn't look clear. The matlab documentation of the matlab function rgb2gray at https://www.mathworks.com/help/matlab/ref/rgb2gray.html suggests the above formula (which is apparently related to 'luminance' in some way).
+
 As a last step, I normalized the image data because I expected that this would make the process of optimization easier.
 
 Here is an example of a traffic sign image before pre-processing, after grayscaling, and after normalization:
 
-![Colour Image](report_images/image_colour_greyscale_normalized.png)
+![Colour Image](report_images/image_colour_greyscale_normalized_all.png)
 
 Due to how matplotlib plots images by default, the normalized image appears the same as the greyscale image. 
 
@@ -115,13 +112,15 @@ My final model consisted of the following layers:
 | Max pooling 2x2	    | 2x2 kernel, 2x2 stride, valid padding, outputs 5x5x32     |
 | Flattened		        | output size is 5 * 5 * 32=800                                 |
 | Fully Connected       | input is 800, output is 200					            |
+| RELU					|												            |
 | Fully Connected       | input is 200, output is 400					            |
+| RELU					| **												            |
 | Fully Connected       | input is 400, output is 600					            |
 | Fully Connected       | input is 400, output is 43 (logits output)** 	            |
 | Softmax               | combined with cross entropy for training, but used directly for inference |
  
 
-**Dropout is applied after this layer (before softmax).
+**Dropout is applied after layers marked with a double asterisk in their description.
 
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
@@ -206,12 +205,15 @@ On final modification I made was to the number of convolutional filters in each 
 
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+I ended up using more than 5 signs so I could investigate certain properties of the network. Here are nine German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![images_from_web_1](report_images/from_web_1.png)
 
-The first image might be difficult to classify because ...
+In addition, I looked at a single type of sign, no entry, at various scales and translations (although always in a 32x32 pixel image). The original no entry sign image and my manually translated and scaled versions are shown below. The top left image is one no-entry sign image, the rest are translations and scalings of the same image.
+
+![images_from_web_2](report_images/from_web_2.png)
+
+It seems that the network is easily able to classify images of signs with distinct shapes. For example, the concentric diamond shape of the priority road, or the octagon of the stop sign, or the triangle of the yield sign. On the other hand, there is a set of signs that are made up of a detailed structure within two concentric circles. For example, the speed limit signs all have the same general outer shape, but the smaller details in the center determine their class. The network must be able to extract features that are only 5-10 pixels wide. I 
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -219,33 +221,113 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
+| Priority Road       		| Priority Road   									|
+| Stop     			| Stop 										|
 | Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Speed Limit (30km/h)	      		| Double curve					 				|
+| Speed Limit (50km/h)	      		| Speed Limit (50km/h)					 				|
+| Speed Limit (70km/h)	      		| Speed Limit (20km/h)					 				|
+| No Entry	      		| No Entry					 				|
 
+The model correctly classified 5/7 of the unique signs tested (accuracy 71.4%). The accuracy on the test set was 94.5%. However, it seems that the accuracy varies signficantly by sign type. Below is a graph of the accuracy of the network by class for the training, validation, and test sets.
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+![accuracy_by_class](report_images/accuracy_by_class.png)
+
+Notice that the yield, stop, priority road, and a few others have accuracy on all 3 sets of >95% (approximate), while for other classes it is clear that the network has overfit the training data (ex 27/pedestrians class). The speed limit signs are slightly worse but not terrible - still greater than 90%. It is also possible that the images I chose from the web for the 30 kph and 70 kph signs have certain differences compared to the training/validation/test sets, or they are part of the 5-10% that is misclassified even in the dataset. Overall it is clear that an overall high score on the entire test set (or validation set) does not necessarily indicate a strong network, especially when the network has a relatively small number images of a few classes.
+
+One advantage to looking at the data class by class is that it allows the observer to make conclusions about which features the network might be struggling to 'pick up'. For example, I can clearly see that while my network meets the accuracy requirements for this project, it clearly would not work in practice - I would need to modify the architecture or training process so that the details of the pedestrian sign are also available.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located under the heading 'Predict the Sign Type for Each Image and Analyze Performance' in my Jupyter notebook.
+
 
 For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
+The top 5 softmax probabilities for each of the signs I pulled from the internet are shown in each figure title in the pictures in the previous section of this report. To match the requested format, I have also summarized those for the unique signs in the 7 tables below. I have rounded all probabilities to 3 digits (the ones that are exactly 1 or 0 are so because of rounding).
+
+**First Figure, Top Left**
+
+Correct Class: Priority Road
+
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| 1.000         			| Priority Road   									| 
+| 0.000     				| Roundabout mandatory 										|
+| 0.000					| Yield											|
+| 0.000	      			| End of no passign by vehicles over 3.5 metric tons					 				|
+| 0.000				    | No Entry      							|
 
 
-For the second image ... 
+**First Figure, Middle Center**
+
+Correct Class: Stop
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.000         			| Stop   									| 
+| 0.000     				| Turn left ahead										|
+| 0.000					| Keep right											|
+| 0.000	      			| No entry					 				|
+| 0.000				    | Bumpy Road      							|
+
+**First Figure, Middle Left**
+
+Correct Class: Yield
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.000         			| Yield   									| 
+| 0.000     			| No Entry										|
+| 0.000				| Bumpy Road									|
+| 0.000	      		| No Passing					 				|
+| 0.000				| Priority road      							|
+
+**First Figure, Bottom Left**
+
+Correct Class: Speed Limit (30km/h)
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.561         			| Double curve   									| 
+| 0.237     			| Speed Limit (30km/h)										|
+| 0.148				| Speed Limit (80km/h)									|
+| 0.012	      		| Dangerous curve to the right					 				|
+| 0.010				| Wild animals crossing      							|
+
+An interesting note in this case is that the network seems to think that "30" and "80" are quite similar. A 3 might be seen as the 'right half' of an 8.
+
+**First Figure, Bottom Center**
+
+Correct Class: Speed Limit (50km/h)
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.545         			| Speed Limit (50km/h)   									| 
+| 0.332     			| No passing for vehicles over 3.5 metric tons										|
+| 0.068				| Turn right ahead									|
+| 0.026	      		| Go straight or left					 				|
+| 0.014				| Speed Limit (70km/h) 							|
+
+**First Figure, Bottom Right**
+
+Correct Class: Speed Limit (70km/h)
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.537         			| Speed Limit (20km/h)   									| 
+| 0.277     			| General caution										|
+| 0.186				| Speed Limit (70km/h)									|
+| 0.000	      		| Turn right ahead					 				|
+| 0.000				| Stop  
+
+A 7 is like a 2 without the bottom horizontal stroke - it makes sense that 20 and 70 are both on the list.
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
+![Visualization of No Entry sign](report_images/visualization_no_entry.png)
 
+It appears that the network uses the overall circular shape and the horizontal bar in the middle of the image to classify the no entry sign. It seems that the individual edges of the horizontal bar (ex. in maps 0, 3, 5, 8, and 9) are  used in addition to the bar's 'area' itself (ex. in maps 6, 10, and 11).
+
+An interesting conclusion of this visualization is that if there were two signs with identical shape but different rotations that had different meaning, one would have to ensure that in the data used that each labelled image had the correct orientation - in other words rotating the training data to increased the number of training images would actually lead to disasterous results. This doesn't seem to be the case for any traffic signs, however.
